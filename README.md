@@ -92,6 +92,19 @@ Edit `config.py` to customize:
 - Flask settings (debug mode, port, etc.)
 - Sonos discovery timeout
 
+### AI Assistant Setup (Optional)
+
+To use the AI conversation features, add your API key in `config.py`:
+
+**Google Gemini:**
+- Get API key: https://makersuite.google.com/app/apikey
+- Set `GEMINI_API_KEY` in `config.py` line 42
+
+**OpenAI:**
+- Get API key: https://platform.openai.com/api-keys
+- Set `OPENAI_API_KEY` in `config.py` line 41
+- Change `AI_PROVIDER` to `'openai'` in `config.py` line 36
+
 ## API Endpoints
 
 - `GET /` - Main dashboard

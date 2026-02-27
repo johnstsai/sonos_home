@@ -89,6 +89,19 @@ sonos_home/
 - Flask 設定（debug、port 等）
 - Sonos 探索逾時時間
 
+### AI 對話功能設定（選用）
+
+若要使用 AI 對話功能，請在 `config.py` 加入您的 API 金鑰：
+
+**Google Gemini：**
+- 取得 API 金鑰：https://makersuite.google.com/app/apikey
+- 在 `config.py` 第 42 行設定 `GEMINI_API_KEY`
+
+**OpenAI：**
+- 取得 API 金鑰：https://platform.openai.com/api-keys
+- 在 `config.py` 第 41 行設定 `OPENAI_API_KEY`
+- 在 `config.py` 第 36 行將 `AI_PROVIDER` 改為 `'openai'`
+
 ## 常見問題
 
 ### 找不到 Sonos 喇叭
