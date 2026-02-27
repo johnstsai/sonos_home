@@ -1,21 +1,21 @@
 # Sonos Home 🏠
 
-A clean, modern Python web application for controlling Sonos speakers with AI-powered voice assistant capabilities.
+A clean, modern Python web application for controlling Sonos speakers with voice assistant capabilities.
 
 ## Features
 
 - 🎵 **Sonos Speaker Control**: Discover, control, and manage Sonos speakers
-- 🤖 **AI Assistant**: Ask questions about your Sonos speakers (powered by local Ollama LLM)
-- 📚 **RAG System**: Smart document retrieval for product information
+- 🤖 **AI Assistant**: Ask questions about your Sonos speakers
 - 🌐 **Web Interface**: Intuitive Flask-based dashboard
 - 💬 **Conversation Management**: Save and load conversation histories
+
+**Note:** This version does not include Ollama or RAG features.
 
 ## Quick Start
 
 ### Requirements
 
 - Python 3.8+
-- Ollama (for local LLM)
 - macOS/Linux/Windows
 
 ### One-Click Installation (Non-Tech Users)
@@ -72,15 +72,15 @@ A clean, modern Python web application for controlling Sonos speakers with AI-po
 sonos_home/
 ├── app/                  # Flask application
 │   ├── routes/          # API endpoints
-│   ├── services/        # Business logic (RAG, Sonos, etc.)
+│   ├── services/        # Business logic (Sonos, etc.)
 │   ├── utils/           # Helper utilities
 │   ├── templates/       # HTML templates
 │   └── static/          # CSS, JS, assets
-├── docs/                # Documentation and training data
+├── docs/                # Documentation
 │   ├── official_docs/   # Product specifications
 │   ├── conversation/    # Saved conversations
 │   └── faq/             # FAQ documents
-├── data/                # Runtime data (ChromaDB, etc.)
+├── data/                # Runtime data
 ├── config.py            # Configuration settings
 ├── run.py               # Flask entry point
 ├── requirements.txt     # Python dependencies
@@ -91,8 +91,6 @@ sonos_home/
 
 Edit `config.py` to customize:
 - Flask settings (debug mode, port, etc.)
-- Ollama connection (host, port)
-- RAG system (embedding model, chunk size)
 - Sonos discovery timeout
 
 ## API Endpoints
@@ -101,25 +99,13 @@ Edit `config.py` to customize:
 - `POST /api/sonos/discover` - Discover speakers on network
 - `POST /api/sonos/play` - Play on speaker
 - `POST /api/sonos/pause` - Pause playback
-- `POST /api/rag/query` - Ask AI questions
-- `POST /api/rag/load` - Load training documents
 
 ## Troubleshooting
-
-### Ollama not connecting
-- Ensure Ollama is running: `ollama serve`
-- Check host configuration in `.env`
-- Verify port 11434 is accessible
 
 ### Sonos speakers not discovered
 - Ensure speakers are on the same network
 - Check firewall settings
 - Increase `SONOS_DISCOVERY_TIMEOUT` if needed
-
-### RAG not working
-- Verify training documents exist in `docs/official_docs/`
-- Check ChromaDB files in `data/.chroma/`
-- Clear cache and reload: `rm -rf data/.chroma/`
 
 ## Development
 
