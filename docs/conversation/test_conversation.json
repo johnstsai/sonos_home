@@ -1,0 +1,20 @@
+[
+  {
+    "user": "Sonos 音箱如何配對？",
+    "assistant": "在 Sonos 應用中，點擊「新增音箱」，然後選擇您要添加的音箱型號。確保音箱已通電並且在配對模式下。",
+    "timestamp": "2026-02-23T10:30:00",
+    "tags": ["setup", "pairing"]
+  },
+  {
+    "user": "如何重置 Sonos 音箱？",
+    "assistant": "長按音箱背面的重置按鈕 10 秒鐘直到指示燈閃爍。這將清除所有設置。",
+    "timestamp": "2026-02-23T10:35:00",
+    "tags": ["reset", "troubleshooting"]
+  },
+  {
+    "user": "Sonos Roam 的電池能用多久？",
+    "assistant": "Sonos Roam 在完全充電後可續航約 10 小時。具體時間取決於音量和使用情況。",
+    "timestamp": "2026-02-23T10:40:00",
+    "tags": ["roam", "battery"]
+  }
+]

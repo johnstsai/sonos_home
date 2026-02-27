@@ -1,0 +1,261 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Net & Sonos Debug — Dashboard</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+            <h1 data-i18n="title">Net & Sonos Debug — Dashboard</h1>
+            <div style="margin-left:auto;display:flex;gap:10px;align-items:center">
+                <div class="small">| <span data-i18n="host_label">Host</span>: 127.0.0.1 · <span data-i18n="soco_label">SoCo</span>: {{ soco_ok }}</div>
+                <select id="lang_select" style="background:transparent;color:inherit;border-radius:6px;padding:6px;border:1px solid rgba(255,255,255,0.04)">
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
+                </select>
+            </div>
+    </header>
+
+    <div class="tabbar">
+        <button class="tabbtn active" data-tab="dashboard" data-i18n="tab_dashboard">Dashboard</button>
+        <button class="tabbtn" data-tab="controller" data-i18n="tab_controller">Controller</button>
+    </div>
+
+    <div id="tab_dashboard" class="tabcontent active">
+        <div class="layout">
+            <div class="left">
+                <div class="card">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <div>
+                            <div class="small" data-i18n="network_label">Network</div>
+                            <div style="font-weight:600"><span data-i18n="detected_label">Detected</span>: <span id="detected_net">{{ detected_net }}</span></div>
+                        </div>
+                        <div class="controls">
+                            <button id="scan_btn" data-i18n="scan_btn">Scan</button>
+                            <button id="download_csv" class="btn-ghost">CSV</button>
+                        </div>
+                    </div>
+                    <div id="scan_status" class="small" style="margin-top:8px"></div>
+                </div>
+
+                <div class="card">
+                    <div class="small" data-i18n="capture_label">手動捕獲 PCAP (Manual Capture)</div>
+                    <div style="margin-top:8px;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:3px solid #4CAF50">
+                        <div class="small" style="margin-bottom:8px;opacity:0.9" data-i18n="capture_manual_desc">
+                            由於安全考量，實時捕獲功能已移除。您可以使用以下命令手動捕獲網絡流量：
+                        </div>
+                        <div style="background:rgba(0,0,0,0.3);padding:10px;border-radius:6px;font-family:monospace;font-size:12px;margin-bottom:8px">
+                            <code id="tcpdump_cmd" style="display:block;word-break:break-all;color:#4CAF50;line-height:1.6;margin-bottom:8px">sudo tcpdump -i en0 -s 65535 -G 5 -W 1 -w ~/Downloads/capture.pcap 'tcp port 1400 or (udp and port 1900)'</code>
+                            <button onclick="navigator.clipboard.writeText(document.getElementById('tcpdump_cmd').innerText).then(()=>{this.innerText='✓ 已複製';setTimeout(()=>{const lang=localStorage.getItem('lang')||'zh';this.innerHTML=lang==='en'?'📋 Copy':'📋 複製'},1500)})" 
+                                    style="display:inline-block;padding:6px 12px;font-size:11px;background:rgba(76,175,80,0.2);border:1px solid #4CAF50;border-radius:4px;cursor:pointer;color:#4CAF50;white-space:nowrap">
+                                📋 <span data-i18n="copy_cmd">複製</span>
+                            </button>
+                        </div>
+                        <div class="small" style="opacity:0.6;margin-bottom:8px;font-size:11px">
+                            💡 <strong data-i18n="capture_note_macos">macOS 用戶注意：</strong>
+                            <span data-i18n="capture_note_desc">使用 <code>en0</code> (Wi-Fi) 或 <code>en4</code> (以太網)，<code>-G 5</code> 表示捕獲 5 秒後自動停止，文件會保存到下載文件夾</span>
+                        </div>
+                        <div class="small" style="opacity:0.7;line-height:1.5" data-i18n="capture_manual_steps">
+                            <strong data-i18n="capture_steps_title">使用步驟：</strong><br>
+                            1️⃣ 在終端執行上述命令<br>
+                            2️⃣ 等待 5 秒自動停止（或按 Ctrl+C 提前停止）<br>
+                            3️⃣ 在下方上傳 ~/Downloads/capture.pcap 進行分析
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="small" data-i18n="pcap_analysis">PCAP Analysis</div>
+                    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center">
+                        <button id="analyze_last" style="min-width:110px" data-i18n="analyze_last">Analyze Last</button>
+                        <button id="download_sonos_pcap" class="btn-ghost" style="min-width:160px" data-i18n="download_sonos_pcap">Download Sonos PCAP</button>
+                    </div>
+                    <div style="margin-top:10px">
+                        <label class="small" for="pcap_file" data-i18n="upload_pcap_label">Upload PCAP to analyze</label>
+                        <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
+                            <input type="file" id="pcap_file" accept=".pcap" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit">
+                            <button id="upload_analyze" class="btn-ghost" data-i18n="upload_analyze">Upload & Analyze</button>
+                        </div>
+                    </div>
+                    <div id="analyze_status" class="small" style="margin-top:8px"></div>
+                </div>
+                <div class="card">
+                    <div class="small" data-i18n="health_checks">Health checks</div>
+                    <div style="display:flex;gap:8px;margin-top:8px">
+                        <button id="check_streams_btn" data-i18n="check_streams_btn">Check Streams</button>
+                        <button id="check_sonos_btn" class="btn-ghost" data-i18n="check_sonos_btn">Check Sonos</button>
+                    </div>
+                    <div id="health_status" class="small" style="margin-top:8px"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card dash-grid">
+                    <div class="metric">
+                        <h3 data-i18n="metric_unique" title="Distinct IP addresses observed in the capture">Unique endpoints</h3>
+                        <div id="m_endpoints" class="value">—</div>
+                        <div class="small" data-i18n="metric_unique_desc">Number of distinct IP addresses seen (src or dst). Useful to understand how many devices are active and to spot unexpected devices on the network.</div>
+                    </div>
+                    <div class="metric">
+                        <h3 data-i18n="metric_ssdp" title="SSDP/UPnP discovery packets on UDP 1900">SSDP messages</h3>
+                        <div id="m_ssdp" class="value">—</div>
+                        <div class="small" data-i18n="metric_ssdp_desc">Count of SSDP discovery/notify packets (UDP 1900). High values indicate active device discovery; repeated bursts can signal noisy devices or discovery loops.</div>
+                    </div>
+                    <div class="metric">
+                        <h3 data-i18n="metric_sonos" title="Sonos control traffic typically on TCP port 1400">Sonos TCP(1400)</h3>
+                        <div id="m_sonos" class="value">—</div>
+                        <div class="small" data-i18n="metric_sonos_desc">Number of TCP(1400) frames related to Sonos control/streaming traffic. Shows active control interactions and helps verify whether Sonos devices are communicating properly.</div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <div><strong>Top endpoints</strong><div class="small">IPs seen most in capture</div></div>
+                        <div class="small">Top 10</div>
+                    </div>
+                    <div id="top_endpoints" class="list-compact" style="margin-top:8px"></div>
+                </div>
+
+                <div class="card" style="margin-top:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <div><strong>Top Sonos senders</strong><div class="small">Sources for TCP 1400</div></div>
+                        <div class="small">Top 10</div>
+                    </div>
+                    <div id="top_senders" class="list-compact" style="margin-top:8px"></div>
+                </div>
+
+                <div class="card" style="margin-top:12px">
+                    <div><strong>SSDP / Discovery (sample)</strong><div class="small">LOCATION / USN extracted</div></div>
+                    <div id="ssdp_list" class="list-compact" style="margin-top:8px"></div>
+                </div>
+                <div class="card" style="margin-top:12px">
+                    <div><strong data-i18n="stream_checks">Stream checks</strong><div class="small">Reachability to popular streaming services</div></div>
+                    <div id="streams_list" class="list-compact" style="margin-top:8px"></div>
+                </div>
+
+                <div class="card" style="margin-top:12px">
+                    <div><strong data-i18n="sonos_health">Sonos health</strong><div class="small">SoCo-discovered players and key metrics</div></div>
+                    <div id="sonos_list" class="list-compact" style="margin-top:8px"></div>
+                </div>
+
+                <div class="card" style="margin-top:12px">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                        <div><strong data-i18n="sonos_diagnostics">Sonos 診斷與修復</strong><div class="small" data-i18n="sonos_diagnostics_desc">常見問題快速修復工具</div></div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+                        <button id="diag_refresh_all" class="btn-ghost" style="padding:10px;font-size:13px">🔄 <span data-i18n="diag_refresh">重新掃描設備</span></button>
+                        <button id="diag_ungroup_all" class="btn-ghost" style="padding:10px;font-size:13px">🔓 <span data-i18n="diag_ungroup">解散所有群組</span></button>
+                        <button id="diag_mute_all" class="btn-ghost" style="padding:10px;font-size:13px">🔇 <span data-i18n="diag_mute">全部靜音</span></button>
+                        <button id="diag_unmute_all" class="btn-ghost" style="padding:10px;font-size:13px">🔊 <span data-i18n="diag_unmute">取消靜音</span></button>
+                        <button id="diag_check_network" class="btn-ghost" style="padding:10px;font-size:13px">📡 <span data-i18n="diag_network">檢查網路連線</span></button>
+                        <button id="diag_sync_check" class="btn-ghost" style="padding:10px;font-size:13px">⏱️ <span data-i18n="diag_sync">檢查同步狀態</span></button>
+                    </div>
+                    <div id="diag_status" class="small" style="margin-top:12px;padding:8px;background:rgba(255,255,255,0.02);border-radius:6px;min-height:40px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tab_controller" class="tabcontent">
+        <!-- Now Playing Card -->
+        <div class="card" style="margin-bottom:16px">
+            <div class="small" style="margin-bottom:12px">🎵 <span data-i18n="now_playing">Now Playing</span></div>
+            <div id="now_playing" style="display:flex;gap:16px;align-items:center;min-height:120px;background:rgba(255,255,255,0.02);border-radius:12px;padding:16px">
+                <div id="np_artwork" style="width:100px;height:100px;border-radius:8px;background:rgba(255,255,255,0.05);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:36px">
+                    🎵
+                </div>
+                <div style="flex:1;min-width:0">
+                    <div id="np_title" style="font-size:18px;font-weight:600;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">-</div>
+                    <div id="np_artist" style="font-size:14px;opacity:0.7;margin-bottom:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">-</div>
+                    <div id="np_speaker" style="font-size:12px;opacity:0.5">-</div>
+                </div>
+                <div id="np_state" style="font-size:14px;padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.05)">
+                    <span data-i18n="state_stopped">Stopped</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Speaker Selection Card -->
+        <div class="card" style="margin-bottom:16px">
+            <div class="small" style="margin-bottom:12px">🔊 <span data-i18n="controller_speakers">Speakers</span></div>
+            <div id="ctrl_speakers" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:12px"></div>
+            <div style="display:flex;gap:8px;align-items:center">
+                <button id="ctrl_group" class="btn-ghost" data-i18n="controller_group">Group</button>
+                <button id="ctrl_ungroup" class="btn-ghost" data-i18n="controller_ungroup">Ungroup</button>
+                <span class="small" id="ctrl_group_status" style="margin-left:8px"></span>
+            </div>
+        </div>
+
+        <!-- Playback Controls Card -->
+        <div class="card" style="margin-bottom:16px">
+            <div class="small" style="margin-bottom:12px">🎛️ <span data-i18n="playback_controls">Playback Controls</span></div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+                <!-- Main playback buttons -->
+                <div style="display:flex;justify-content:center;gap:12px">
+                    <button id="ctrl_prev" style="width:60px;height:60px;border-radius:50%;font-size:20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)" title="Previous">⏮️</button>
+                    <button id="ctrl_play" style="width:80px;height:80px;border-radius:50%;font-size:28px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border:none;box-shadow:0 4px 12px rgba(102,126,234,0.4)" title="Play">▶️</button>
+                    <button id="ctrl_pause" style="width:80px;height:80px;border-radius:50%;font-size:28px;background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);border:none;box-shadow:0 4px 12px rgba(245,87,108,0.4);display:none" title="Pause">⏸️</button>
+                    <button id="ctrl_next" style="width:60px;height:60px;border-radius:50%;font-size:20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)" title="Next">⏭️</button>
+                </div>
+                
+                <!-- Volume controls -->
+                <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.02);padding:16px;border-radius:12px">
+                    <button id="ctrl_mute" style="width:40px;height:40px;border-radius:8px;font-size:18px" title="Mute">🔇</button>
+                    <button id="ctrl_voldown" style="width:40px;height:40px;border-radius:8px;font-size:18px" title="Volume Down">➖</button>
+                    <div style="flex:1;display:flex;align-items:center;gap:8px">
+                        <span style="font-size:14px;opacity:0.7">🔊</span>
+                        <input id="ctrl_volume" type="range" min="0" max="100" value="30" style="flex:1;height:6px">
+                        <span id="ctrl_volume_val" style="min-width:40px;text-align:center;font-weight:600">30%</span>
+                    </div>
+                    <button id="ctrl_volup" style="width:40px;height:40px;border-radius:8px;font-size:18px" title="Volume Up">➕</button>
+                    <button id="ctrl_unmute" style="width:40px;height:40px;border-radius:8px;font-size:18px" title="Unmute">🔊</button>
+                </div>
+            </div>
+            <div id="ctrl_status" class="small" style="margin-top:12px;text-align:center"></div>
+        </div>
+
+        <!-- Music Search & Queue Card -->
+        <div class="card">
+            <div style="display:flex;gap:16px;margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:12px">
+                <button id="tab_search" class="btn-ghost" style="border-bottom:2px solid #667eea" onclick="showMusicTab('search')">
+                    🔍 <span data-i18n="search_music">Search Music</span>
+                </button>
+                <button id="tab_queue" class="btn-ghost" onclick="showMusicTab('queue')">
+                    📋 <span data-i18n="queue">Queue</span>
+                </button>
+            </div>
+
+            <!-- Search Tab -->
+            <div id="music_tab_search">
+                <div style="display:flex;gap:8px;margin-bottom:12px">
+                    <input id="ctrl_search" type="text" placeholder="Search tracks, albums, artists..." style="flex:1;padding:12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)">
+                    <select id="ctrl_service" style="padding:12px;border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)">
+                        <option value="library">📚 Library</option>
+                        <option value="spotify">🎵 Spotify</option>
+                        <option value="tunein">📻 TuneIn</option>
+                    </select>
+                    <button id="ctrl_search_btn" style="padding:12px 24px;border-radius:8px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)">
+                        <span data-i18n="controller_search_btn">Search</span>
+                    </button>
+                </div>
+                
+                <div id="ctrl_results" style="max-height:400px;overflow-y:auto"></div>
+            </div>
+
+            <!-- Queue Tab -->
+            <div id="music_tab_queue" style="display:none">
+                <div style="margin-bottom:12px">
+                    <button id="refresh_queue" class="btn-ghost">🔄 <span data-i18n="refresh_queue">Refresh Queue</span></button>
+                    <button id="clear_queue" class="btn-ghost">🗑️ <span data-i18n="clear_queue">Clear Queue</span></button>
+                </div>
+                <div id="ctrl_queue" style="max-height:400px;overflow-y:auto"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>Bound to localhost only. Use with care — capturing network traffic requires privileges.</footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
