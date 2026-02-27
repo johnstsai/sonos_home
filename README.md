@@ -18,7 +18,23 @@ A clean, modern Python web application for controlling Sonos speakers with AI-po
 - Ollama (for local LLM)
 - macOS/Linux/Windows
 
-### Installation
+### One-Click Installation (Non-Tech Users)
+
+**macOS:**
+1. Double-click `INSTALL.command`
+2. Wait for installation to complete
+3. Double-click `START.command` to launch
+
+**Windows:**
+1. Double-click `INSTALL.bat`
+2. Wait for installation to complete
+3. Double-click `START.bat` to launch
+
+**Linux:**
+1. Run `./INSTALL.sh`
+2. Run `./START.sh`
+
+### Manual Installation
 
 1. **Clone the repository**
    ```bash
