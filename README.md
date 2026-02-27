@@ -11,6 +11,9 @@ A clean, modern Python web application for controlling Sonos speakers with voice
 
 **Note:** This version does not include Ollama or RAG features.
 
+- **中文說明**: See `README_zh-TW.md`
+- **中文社群**: https://www.facebook.com/groups/211308792045575
+
 ## Quick Start
 
 ### Requirements
