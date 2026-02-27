@@ -76,10 +76,6 @@ sonos_home/
 │   ├── utils/           # 工具函式
 │   ├── templates/       # HTML 模板
 │   └── static/          # CSS、JS、資源
-├── docs/                # 文件與資料
-│   ├── official_docs/   # 產品規格
-│   ├── conversation/    # 對話紀錄
-│   └── faq/             # FAQ
 ├── data/                # 執行時資料
 ├── config.py            # 設定
 ├── run.py               # 啟動入口

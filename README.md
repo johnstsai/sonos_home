@@ -79,10 +79,6 @@ sonos_home/
 │   ├── utils/           # Helper utilities
 │   ├── templates/       # HTML templates
 │   └── static/          # CSS, JS, assets
-├── docs/                # Documentation
-│   ├── official_docs/   # Product specifications
-│   ├── conversation/    # Saved conversations
-│   └── faq/             # FAQ documents
 ├── data/                # Runtime data
 ├── config.py            # Configuration settings
 ├── run.py               # Flask entry point
