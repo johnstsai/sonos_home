@@ -18,3 +18,9 @@ def index_classic():
     """Classic dashboard page"""
     detected = detect_local_network()
     return render_template('index.html', detected_net=detected, soco_ok=str(HAVE_SOCO))
+
+
+@bp.route("/return")
+def return_to_dashboard():
+    """One-click return page for Sonos Web App same-tab mode"""
+    return render_template('return.html')

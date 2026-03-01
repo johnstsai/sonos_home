@@ -52,6 +52,28 @@ function dashboardApp() {
                     tab_controller: 'Controller',
                     tab_intercom: 'Intercom',
                     tab_assistant: 'Voice Assistant',
+                    tab_sonos_webapp: 'Sonos Web App',
+                    sonos_webapp_title: 'Sonos Web App',
+                    sonos_webapp_desc: 'Use Companion mode to connect with the official Sonos Web App.',
+                    sonos_webapp_notice: 'The official Sonos site may block iframe embedding (X-Frame-Options / CSP). Use window or tab mode.',
+                    open_in_new_tab: 'Open in New Tab',
+                    open_same_tab: 'Open in Same Tab',
+                    open_in_window: 'Open in Window',
+                    companion_quick_actions: 'Quick Actions',
+                    copy_webapp_link: 'Copy Sonos Web App Link',
+                    copy_return_shortcut: 'Copy One-Click Return Shortcut',
+                    back_to_local_controller: 'Back to Local Controller',
+                    back_to_dashboard: 'Back to Dashboard',
+                    recommended_workflow: 'Recommended Workflow',
+                    workflow_step_1: 'Use same-tab launch to enter Sonos Web App quickly.',
+                    workflow_step_2: 'Use your saved /return shortcut to come back with one click.',
+                    workflow_step_3: 'Return here for diagnostics, grouping, scheduling, and automation.',
+                    sonos_webapp_opened: 'Sonos Web App opened',
+                    sonos_webapp_same_tab_opened: 'Opening Sonos Web App in current tab...',
+                    sonos_webapp_popup_blocked: 'Popup blocked by browser, please allow popups or use new tab',
+                    sonos_webapp_link_copied: 'Sonos Web App link copied',
+                    sonos_webapp_copy_failed: 'Failed to copy link',
+                    sonos_return_shortcut_copied: 'One-click return shortcut copied',
                     network_label: 'Network',
                     scan_btn: 'Scan Network',
                     detected_label: 'Detected',
@@ -155,6 +177,28 @@ function dashboardApp() {
                     tab_controller: '音樂控制',
                     tab_intercom: '對講機',
                     tab_assistant: '語音助理',
+                    tab_sonos_webapp: 'Sonos Web App',
+                    sonos_webapp_title: 'Sonos Web App 整合',
+                    sonos_webapp_desc: '使用 Companion 模式整合 Sonos 官方 Web App。',
+                    sonos_webapp_notice: '官方站點常阻擋 iframe 內嵌（X-Frame-Options / CSP），請改用新視窗或新分頁模式。',
+                    open_in_new_tab: '在新分頁開啟',
+                    open_same_tab: '同分頁前往',
+                    open_in_window: '開新視窗',
+                    companion_quick_actions: '快速操作',
+                    copy_webapp_link: '複製 Sonos Web App 連結',
+                    copy_return_shortcut: '複製一鍵返回捷徑',
+                    back_to_local_controller: '回到本地控制面板',
+                    back_to_dashboard: '回到儀表板',
+                    recommended_workflow: '建議工作流程',
+                    workflow_step_1: '先按「同分頁前往」進入 Sonos Web App。',
+                    workflow_step_2: '把 `/return` 捷徑加入書籤，之後可一鍵返回本地儀表板。',
+                    workflow_step_3: '回來後再做診斷、群組、排程與自動化。',
+                    sonos_webapp_opened: '已開啟 Sonos Web App',
+                    sonos_webapp_same_tab_opened: '即將在同分頁開啟 Sonos Web App...',
+                    sonos_webapp_popup_blocked: '瀏覽器阻擋彈出視窗，請允許彈窗或改用新分頁',
+                    sonos_webapp_link_copied: '已複製 Sonos Web App 連結',
+                    sonos_webapp_copy_failed: '複製連結失敗',
+                    sonos_return_shortcut_copied: '已複製一鍵返回捷徑',
                     network_label: '網路掃描',
                     scan_btn: '開始掃描',
                     detected_label: '偵測到',
@@ -258,6 +302,28 @@ function dashboardApp() {
                     tab_controller: 'コントローラ',
                     tab_intercom: 'インターコム',
                     tab_assistant: '音声アシスタント',
+                    tab_sonos_webapp: 'Sonos Web App',
+                    sonos_webapp_title: 'Sonos Web App',
+                    sonos_webapp_desc: 'Companion モードで Sonos 公式 Web App と連携します。',
+                    sonos_webapp_notice: '公式サイトは iframe 埋め込みを拒否する場合があります（X-Frame-Options / CSP）。新規ウィンドウ/タブを使用してください。',
+                    open_in_new_tab: '新しいタブで開く',
+                    open_same_tab: '同じタブで開く',
+                    open_in_window: '新しいウィンドウで開く',
+                    companion_quick_actions: 'クイックアクション',
+                    copy_webapp_link: 'Sonos Web App リンクをコピー',
+                    copy_return_shortcut: 'ワンクリック戻るショートカットをコピー',
+                    back_to_local_controller: 'ローカルコントローラへ戻る',
+                    back_to_dashboard: 'ダッシュボードへ戻る',
+                    recommended_workflow: '推奨ワークフロー',
+                    workflow_step_1: 'まず「同じタブで開く」で Sonos Web App へ移動します。',
+                    workflow_step_2: '`/return` ショートカットをブックマークしておくと1クリックで戻れます。',
+                    workflow_step_3: '戻ってから診断・グループ化・スケジュール・自動化を行います。',
+                    sonos_webapp_opened: 'Sonos Web App を開きました',
+                    sonos_webapp_same_tab_opened: '同じタブで Sonos Web App を開きます...',
+                    sonos_webapp_popup_blocked: 'ポップアップがブロックされました。許可するか新しいタブを使用してください',
+                    sonos_webapp_link_copied: 'Sonos Web App のリンクをコピーしました',
+                    sonos_webapp_copy_failed: 'リンクのコピーに失敗しました',
+                    sonos_return_shortcut_copied: 'ワンクリック戻るショートカットをコピーしました',
                     network_label: 'ネットワークスキャン',
                     scan_btn: 'スキャン開始',
                     detected_label: '検出',
@@ -418,6 +484,44 @@ function dashboardApp() {
         setTheme(newTheme) {
             this.theme = newTheme;
             localStorage.setItem('theme', newTheme);
+        },
+
+        launchSonosWebAppSameTab() {
+            const returnUrl = window.location.origin + '/';
+            const targetUrl = 'https://play.sonos.com/zh-tw/web-app';
+            sessionStorage.setItem('sonos_return_url', returnUrl);
+            this.showToastKey('sonos_webapp_same_tab_opened');
+            window.location.assign(targetUrl);
+        },
+
+        launchSonosWebAppWindow() {
+            const url = 'https://play.sonos.com/zh-tw/web-app';
+            const sonosWindow = window.open(url, 'sonosWebApp', 'noopener,noreferrer,width=1400,height=900');
+            if (!sonosWindow) {
+                this.showToastKey('sonos_webapp_popup_blocked');
+                return;
+            }
+            this.showToastKey('sonos_webapp_opened');
+        },
+
+        async copySonosWebAppLink() {
+            const url = 'https://play.sonos.com/zh-tw/web-app';
+            try {
+                await navigator.clipboard.writeText(url);
+                this.showToastKey('sonos_webapp_link_copied');
+            } catch (error) {
+                this.showToastKey('sonos_webapp_copy_failed');
+            }
+        },
+
+        async copyReturnShortcut() {
+            const returnShortcut = window.location.origin + '/return';
+            try {
+                await navigator.clipboard.writeText(returnShortcut);
+                this.showToastKey('sonos_return_shortcut_copied');
+            } catch (error) {
+                this.showToastKey('sonos_webapp_copy_failed');
+            }
         },
         
         // Toast notification

@@ -7,6 +7,7 @@ A clean, modern Python web application for controlling Sonos speakers with voice
 - 🎵 **Sonos Speaker Control**: Discover, control, and manage Sonos speakers
 - 🤖 **AI Assistant**: Ask questions about your Sonos speakers
 - 🌐 **Web Interface**: Intuitive Flask-based dashboard
+- 🧭 **Sonos Web App Integration**: Companion mode to launch `play.sonos.com` from the navigation menu
 - 💬 **Conversation Management**: Save and load conversation histories
 
 **Note:** This version does not include Ollama or RAG features.

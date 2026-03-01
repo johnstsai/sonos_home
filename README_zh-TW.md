@@ -7,6 +7,7 @@
 - 🎵 **Sonos 喇叭控制**：探索、控制與管理 Sonos 喇叭
 - 🤖 **AI 助理**：詢問 Sonos 相關問題
 - 🌐 **Web 介面**：直覺的 Flask 儀表板
+- 🧭 **Sonos Web App 整合**：以 Companion 模式從導覽列快速開啟 `play.sonos.com`
 - 💬 **對話管理**：儲存與載入對話紀錄
 
 **注意：此版本不包含 Ollama 或 RAG 功能。**

@@ -264,6 +264,12 @@
                                 <i data-lucide="bot" class="w-5 h-5"></i>
                                 <span x-text="t('tab_assistant')">語音助理</span>
                             </button>
+                            <button @click="activeTab = 'sonos_webapp'; menuOpen = false"
+                                    :class="activeTab === 'sonos_webapp' ? 'gradient-primary' : 'hover:bg-white/20'"
+                                    class="w-full px-6 py-3 text-left font-semibold transition-all flex items-center gap-3 border-t border-white/20">
+                                <i data-lucide="external-link" class="w-5 h-5"></i>
+                                <span x-text="t('tab_sonos_webapp')">Sonos Web App</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1380,6 +1386,89 @@ sudo tcpdump -i en0 -s 65535 -G 5 -W 1 -w ~/Downloads/capture.pcap 'tcp port 140
                             <i data-lucide="trash-2" class="w-4 h-4 inline"></i> <span x-text="t('clear_chat')">清除對話</span>
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sonos Web App Tab -->
+    <div x-show="activeTab === 'sonos_webapp'" x-cloak class="container mx-auto px-6 py-6 pb-12">
+        <div class="glass-card rounded-2xl p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold aurora-text" x-text="t('sonos_webapp_title')">Sonos Web App</h2>
+                    <p class="text-sm text-gray-300 mt-1" x-text="t('sonos_webapp_desc')">
+                        使用 Companion 模式整合 Sonos 官方 Web App，避免 iframe 被阻擋。
+                    </p>
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                    <button @click="launchSonosWebAppSameTab"
+                       class="glass-card py-2 px-4 rounded-xl font-semibold hover:bg-white/10 transition-all flex items-center gap-2 border border-white/20">
+                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        <span x-text="t('open_same_tab')">同分頁前往</span>
+                    </button>
+                    <button @click="launchSonosWebAppWindow"
+                       class="glass-card py-2 px-4 rounded-xl font-semibold hover:bg-white/10 transition-all flex items-center gap-2 border border-white/20">
+                        <i data-lucide="monitor-up" class="w-4 h-4"></i>
+                        <span x-text="t('open_in_window')">開新視窗</span>
+                    </button>
+                    <a href="https://play.sonos.com/zh-tw/web-app"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="glass-card py-2 px-4 rounded-xl font-semibold hover:bg-white/10 transition-all flex items-center gap-2 border border-white/20">
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        <span x-text="t('open_in_new_tab')">在新分頁開啟</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-xl p-4 border border-yellow-500/30 bg-yellow-500/5 text-sm text-yellow-200 flex items-start gap-3">
+                <i data-lucide="shield-alert" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                <p x-text="t('sonos_webapp_notice')">
+                    Sonos 官方站點通常會阻擋 iframe 內嵌（X-Frame-Options / CSP），建議使用新視窗或新分頁模式。
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="glass-card rounded-xl p-5 border border-cyan-500/20 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="link" class="w-5 h-5 text-cyan-300"></i>
+                        <h3 class="font-semibold" x-text="t('companion_quick_actions')">快速操作</h3>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <button @click="copyReturnShortcut"
+                                class="glass-card py-2 px-3 rounded-lg text-left hover:bg-white/10 border border-white/10 flex items-center gap-2">
+                            <i data-lucide="undo-2" class="w-4 h-4"></i>
+                            <span x-text="t('copy_return_shortcut')">複製一鍵返回捷徑</span>
+                        </button>
+                        <button @click="copySonosWebAppLink"
+                                class="glass-card py-2 px-3 rounded-lg text-left hover:bg-white/10 border border-white/10 flex items-center gap-2">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span x-text="t('copy_webapp_link')">複製 Sonos Web App 連結</span>
+                        </button>
+                        <button @click="activeTab = 'controller'"
+                                class="glass-card py-2 px-3 rounded-lg text-left hover:bg-white/10 border border-white/10 flex items-center gap-2">
+                            <i data-lucide="music-2" class="w-4 h-4"></i>
+                            <span x-text="t('back_to_local_controller')">回到本地控制面板</span>
+                        </button>
+                        <button @click="activeTab = 'dashboard'"
+                                class="glass-card py-2 px-3 rounded-lg text-left hover:bg-white/10 border border-white/10 flex items-center gap-2">
+                            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                            <span x-text="t('back_to_dashboard')">回到儀表板</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl p-5 border border-purple-500/20 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="workflow" class="w-5 h-5 text-purple-300"></i>
+                        <h3 class="font-semibold" x-text="t('recommended_workflow')">建議工作流程</h3>
+                    </div>
+                    <ol class="list-decimal pl-5 text-sm text-gray-300 space-y-2">
+                        <li x-text="t('workflow_step_1')">先按「同分頁前往」進入 Sonos Web App。</li>
+                        <li x-text="t('workflow_step_2')">需要回來時，在瀏覽器開啟你儲存的 `/return` 捷徑即可一鍵返回。</li>
+                        <li x-text="t('workflow_step_3')">回到本地介面做診斷、群組、排程與自動化。</li>
+                    </ol>
                 </div>
             </div>
         </div>
